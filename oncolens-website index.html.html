@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OncoLens AI — Intelligent Pathology Copilot</title>
+  <meta name="description" content="OncoLens AI helps researchers and clinicians explore histopathology images with AI-assisted biomarker prioritization." />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#07111f;--panel:#0c1a2b;--panel2:#102238;--text:#eef6ff;
+      --muted:#9eb0c5;--accent:#43d6c5;--accent2:#6d8cff;--border:rgba(255,255,255,.09)
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:
+      radial-gradient(circle at 80% 10%,rgba(67,214,197,.13),transparent 30%),
+      radial-gradient(circle at 10% 30%,rgba(109,140,255,.13),transparent 28%),var(--bg);
+      color:var(--text);line-height:1.6}
+    a{text-decoration:none;color:inherit}
+    .nav{position:sticky;top:0;z-index:10;background:rgba(7,17,31,.78);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .navin{max-width:1180px;margin:auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:22px;font-weight:800;letter-spacing:-.6px}.logo span{color:var(--accent)}
+    .links{display:flex;gap:28px;color:var(--muted);font-size:14px}.links a:hover{color:#fff}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:11px 18px;font-weight:700;font-size:14px;border:1px solid var(--border);transition:.2s;cursor:pointer}
+    .btn.primary{background:var(--accent);color:#06131c;border:0}.btn.primary:hover{transform:translateY(-2px);filter:brightness(1.05)}
+    .btn.ghost:hover{background:rgba(255,255,255,.06)}
+    .hero{max-width:1180px;margin:auto;padding:105px 24px 85px;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+    .badge{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(67,214,197,.25);background:rgba(67,214,197,.07);color:#9ef2e8;border-radius:99px;padding:7px 12px;font-size:12px;font-weight:700;margin-bottom:22px}
+    h1{font-size:clamp(48px,6vw,78px);line-height:.98;letter-spacing:-4px;max-width:750px}
+    h1 span{background:linear-gradient(100deg,var(--accent),#8aa0ff);-webkit-background-clip:text;color:transparent}
+    .hero p{font-size:18px;color:var(--muted);max-width:650px;margin:25px 0 30px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .dashboard{background:linear-gradient(145deg,rgba(16,34,56,.98),rgba(8,21,36,.98));border:1px solid var(--border);border-radius:24px;padding:18px;box-shadow:0 25px 80px rgba(0,0,0,.35);transform:rotate(1deg)}
+    .dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.dot{width:9px;height:9px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:7px}
+    .dash-title{font-size:13px;color:#c8d7e8;font-weight:700}
+    .scan{height:230px;border-radius:16px;background:
+      linear-gradient(135deg,rgba(67,214,197,.1),rgba(109,140,255,.13)),
+      repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 2px,transparent 2px 7px);
+      border:1px solid var(--border);position:relative;overflow:hidden}
+    .cell{position:absolute;border-radius:50%;border:2px solid rgba(67,214,197,.65);box-shadow:0 0 20px rgba(67,214,197,.25)}
+    .c1{width:75px;height:75px;left:18%;top:20%}.c2{width:55px;height:55px;left:48%;top:43%}.c3{width:95px;height:95px;right:12%;top:15%}.c4{width:45px;height:45px;left:35%;bottom:10%}
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}.metric{background:rgba(255,255,255,.035);padding:12px;border-radius:12px}.metric b{display:block;font-size:18px}.metric small{color:var(--muted);font-size:10px}
+    section{max-width:1180px;margin:auto;padding:85px 24px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+    h2{font-size:42px;letter-spacing:-2px;line-height:1.05;margin-bottom:14px}.sectionlead{color:var(--muted);max-width:680px;margin-bottom:35px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:rgba(12,26,43,.75);border:1px solid var(--border);border-radius:18px;padding:25px}.icon{font-size:25px;margin-bottom:16px}.card h3{font-size:19px;margin-bottom:8px}.card p{color:var(--muted);font-size:14px}
+    .workflow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.step{padding:20px;border-left:2px solid var(--accent);background:rgba(255,255,255,.025);border-radius:0 14px 14px 0}.num{font-size:12px;color:var(--accent);font-weight:800}.step h3{margin:7px 0}.step p{color:var(--muted);font-size:13px}
+    .cta{margin:20px auto 80px;max-width:1130px;padding:55px 30px;text-align:center;border:1px solid rgba(67,214,197,.2);border-radius:25px;background:linear-gradient(120deg,rgba(67,214,197,.08),rgba(109,140,255,.08))}
+    .cta p{color:var(--muted);margin:12px auto 24px;max-width:620px}
+    footer{border-top:1px solid var(--border);padding:28px 24px;color:var(--muted);font-size:13px}.foot{max-width:1180px;margin:auto;display:flex;justify-content:space-between}
+    @media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:70px}.links{display:none}.grid{grid-template-columns:1fr}.workflow{grid-template-columns:1fr 1fr}h1{letter-spacing:-2.5px}.dashboard{transform:none}}
+    @media(max-width:520px){.workflow{grid-template-columns:1fr}h2{font-size:34px}.hero{padding-left:18px;padding-right:18px}section{padding-left:18px;padding-right:18px}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="navin">
+      <a class="logo" href="#">Onco<span>Lens</span> AI</a>
+      <div class="links"><a href="#features">Features</a><a href="#workflow">Workflow</a><a href="#about">About</a></div>
+      <a class="btn primary" href="#demo">Launch Demo</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="badge">● AI-ASSISTED DIGITAL PATHOLOGY</div>
+        <h1>See cancer<br><span>with more insight.</span></h1>
+        <p>OncoLens AI is an intelligent pathology copilot designed to help researchers explore histopathology images, identify patterns and prioritize clinically relevant biomarkers.</p>
+        <div class="actions">
+          <a class="btn primary" href="#demo">Explore OncoLens</a>
+          <a class="btn ghost" href="#workflow">How it works →</a>
+        </div>
+      </div>
+
+      <div class="dashboard">
+        <div class="dash-top">
+          <div class="dash-title"><span class="dot"></span>Analysis Workspace</div>
+          <div style="color:#9eb0c5;font-size:11px">PT-7734</div>
+        </div>
+        <div class="scan">
+          <div class="cell c1"></div><div class="cell c2"></div><div class="cell c3"></div><div class="cell c4"></div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><b>94.2%</b><small>MODEL CONFIDENCE</small></div>
+          <div class="metric"><b>12</b><small>REGIONS FLAGGED</small></div>
+          <div class="metric"><b>08</b><small>BIOMARKERS</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="eyebrow">Built for discovery</div>
+      <h2>From slide image to<br>actionable insight.</h2>
+      <p class="sectionlead">A focused AI workflow for pathology research — designed to make complex image analysis easier to understand, compare and communicate.</p>
+      <div class="grid">
+        <article class="card"><div class="icon">◉</div><h3>Histopathology Analysis</h3><p>Upload and analyze tissue images using deep-learning based image classification and visual pattern recognition.</p></article>
+        <article class="card"><div class="icon">✦</div><h3>Biomarker Prioritization</h3><p>Surface candidate biomarkers and rank findings using model-derived evidence and interpretable signals.</p></article>
+        <article class="card"><div class="icon">⌁</div><h3>Explainable Results</h3><p>Turn model outputs into clear summaries so researchers can understand what the system detected and why it matters.</p></article>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="eyebrow">Simple workflow</div>
+      <h2>Four steps. One workspace.</h2>
+      <p class="sectionlead">Keep the analysis journey organized from image input to final report.</p>
+      <div class="workflow">
+        <div class="step"><div class="num">01 / UPLOAD</div><h3>Add slide</h3><p>Upload a histopathology image to begin.</p></div>
+        <div class="step"><div class="num">02 / ANALYZE</div><h3>AI processing</h3><p>The model evaluates image-level patterns.</p></div>
+        <div class="step"><div class="num">03 / PRIORITIZE</div><h3>Review signals</h3><p>Explore flagged regions and candidate biomarkers.</p></div>
+        <div class="step"><div class="num">04 / REPORT</div><h3>Generate insight</h3><p>Summarize findings for research workflows.</p></div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="eyebrow">Why OncoLens</div>
+      <h2>AI that supports the researcher — not replaces them.</h2>
+      <p class="sectionlead">OncoLens is designed as a decision-support and research tool. Its goal is to reduce repetitive image-review work while keeping human interpretation at the center of the workflow.</p>
+      <div class="grid">
+        <article class="card"><h3>Research-first</h3><p>Designed around experimentation, model evaluation and transparent analysis.</p></article>
+        <article class="card"><h3>Modular AI</h3><p>Built to evolve with different datasets, models and pathology analysis methods.</p></article>
+        <article class="card"><h3>Human-in-the-loop</h3><p>AI findings remain suggestions for expert review rather than autonomous diagnosis.</p></article>
+      </div>
+    </section>
+
+    <div class="cta" id="demo">
+      <div class="eyebrow">OncoLens Insight Compass</div>
+      <h2>Ready to explore the slide?</h2>
+      <p>Launch the analysis workspace and turn a pathology image into a structured research insight.</p>
+      <a class="btn primary" href="app/analysis.html">Launch Analysis Workspace →</a>
+    </div>
+  </main>
+
+  <footer><div class="foot"><span>© 2026 OncoLens AI</span><span>Research & educational prototype</span></div></footer>
+</body>
+</html>
